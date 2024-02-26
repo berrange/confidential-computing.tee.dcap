@@ -12,9 +12,8 @@ WARM_Lib_Path := $(WARM_Top_Path)/product-mini/platforms/linux/build/
 
 JWT_CPP_Path := ../../../external/jwt-cpp/
 RAPIDJSON_DIR :=  ../../QVL/Src/ThirdParty/rapidjson/include
-PREBUILD_OPENSSL_PATH := ../../../prebuilt/openssl
 QAL_Include_Path := -I$(SGX_SDK)/include \
-                -I$(PREBUILD_OPENSSL_PATH)/inc \
+                $(shell pkg-config --cflags libcrypto) \
                 -I$(DCAP_QG_DIR)/common/inc/internal/linux \
                 -I$(WARM_Top_Path)/core/iwasm/include \
                 -I$(JWT_CPP_Path)/include   \
@@ -27,7 +26,7 @@ QAL_Cpp_Flags := $(CXXFLAGS) -g -fPIC $(QAL_Include_Path)
 QAL_C_Flags := $(CFLAGS) -g -fPIC $(QAL_Include_Path)
 
 QAL_Link_Flags := $(COMMON_LDFLAGS) -L$(WARM_Lib_Path) -liwasm  -ldl -lm -lpthread \
-                -L$(PREBUILD_OPENSSL_PATH)/lib/linux64 -lcrypto \
+                $(shell pkg-config --libs libcrypto) \
                 -Wl,--gc-sections -Wl,--version-script=sgx_dcap_qal.lds
 
 WASM_CONFIG ?= -DCMAKE_BUILD_TYPE=Release -DWAMR_BUILD_SIMD=0

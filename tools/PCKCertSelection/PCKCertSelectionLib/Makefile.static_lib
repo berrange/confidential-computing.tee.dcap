@@ -118,7 +118,7 @@ LIB_CPP_OBJECTS 	:= \
 LIB_CPP_OBJECTS := $(addprefix $(BIN_DIR)/, $(LIB_CPP_OBJECTS))
 
 # include paths, local, parser and openssl
-LIB_INCLUDE_PATHS	:= -I. -I$(PROJ_ROOT_DIR)/include -I$(OPENSSL_INC) -I$(JSON_INC) -I$(PARSERS_INC) -I$(PARSERS_COMM_INC) -I$(PARSERS_DIR) -I$(VER_DIR) -I$(PARSERS_UTIL_INC)
+LIB_INCLUDE_PATHS	:= -I. -I$(PROJ_ROOT_DIR)/include $(shell pkg-config --cflags libcrypto) -I$(JSON_INC) -I$(PARSERS_INC) -I$(PARSERS_COMM_INC) -I$(PARSERS_DIR) -I$(VER_DIR) -I$(PARSERS_UTIL_INC)
 
 # the library shared object name
 LIB_NAME		:= libPCKCertSelection.a
@@ -197,9 +197,6 @@ $(BIN_DIR)/%.o: $(UTILS_DIR)/%.cpp
 $(LIB_NAME): $(LIB_CPP_OBJECTS)
 	$(PCKCERTSEL_VERBOSE)echo "Archiving..."
 	$(PCKCERTSEL_VERBOSE)$(AR) -rcs $(BIN_DIR)/$@ $^
-	$(PCKCERTSEL_VERBOSE)@$(MKDIR) $(BIN_DIR)/.libcrypto
-	$(PCKCERTSEL_VERBOSE)@$(RM) -f $(BIN_DIR)/.libcrypto/* && cd $(BIN_DIR)/.libcrypto && $(AR) x $(OPENSSL_LIB)/libcrypto.a
-	$(PCKCERTSEL_VERBOSE)$(AR) qD $(BIN_DIR)/$@ $(BIN_DIR)/.libcrypto/*.o
 
 debug:
 	$(PCKCERTSEL_VERBOSE)$(MAKE) DEBUG=1 all

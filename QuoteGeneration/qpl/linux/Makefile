@@ -7,7 +7,6 @@
 ######## SGX SDK Settings ########
 TOP_DIR  = ../..
 include $(TOP_DIR)/buildenv.mk
-PREBUILD_OPENSSL_PATH  = ../../../prebuilt/openssl
 
 ######## SGX QPL Library Settings ########
 
@@ -17,17 +16,16 @@ QPL_Lib_Cpp_Files := $(wildcard *.cpp ../*.cpp)
 QPL_Lib_Include_Paths := -I../../quote_wrapper/common/inc       \
                          -I../inc -I$(SGX_SDK)/include          \
                          -I../../common/inc/internal            \
-                         -I../../qcnl/inc                       \
-                         -I$(PREBUILD_OPENSSL_PATH)/inc
+                         -I../../qcnl/inc
 
-QPL_Lib_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(QPL_Lib_Include_Paths)
+QPL_Lib_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(QPL_Lib_Include_Paths) $(shell pkg-config --cflags libcrypto)
 
 LDUFLAGS:= -pthread $(COMMON_LDFLAGS)
 LDUFLAGS += -Wl,--version-script=sgx_default_quote_provider.lds -Wl,--gc-sections
 
 QPL_Lib_Cpp_Flags := $(QPL_Lib_C_Flags)
 
-QPL_Lib_Link_Flags := $(SGX_COMMON_FLAGS) -g -L$(TOP_DIR)/build/linux -L$(SGX_SDK)/lib64 -L$(PREBUILD_OPENSSL_PATH)/lib/linux64 \
+QPL_Lib_Link_Flags := $(SGX_COMMON_FLAGS) -g -L$(TOP_DIR)/build/linux -L$(SGX_SDK)/lib64 \
         -lcrypto -lsgx_default_qcnl_wrapper -lpthread -ldl
  
 ifndef DEBUG

@@ -7,7 +7,6 @@
 ######## SGX SDK Settings ########
 TOP_DIR = ../..
 include $(TOP_DIR)/buildenv.mk
-PREBUILD_OPENSSL_PATH = ../../../prebuilt/openssl
 
 ######## SGX CNL Library Settings ########
 
@@ -19,10 +18,9 @@ CNL_Lib_Include_Paths := -I../../quote_wrapper/common/inc       \
                          -I../inc -I$(SGX_SDK)/include          \
                          -I../../common/inc/internal            \
                          -I../../../QuoteVerification/QVL/Src/ThirdParty/rapidjson/include/rapidjson	\
-                         -I../../../tools/PCKCertSelection/include \
-                         -I$(PREBUILD_OPENSSL_PATH)/inc
+                         -I../../../tools/PCKCertSelection/include
 
-CNL_Lib_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(CNL_Lib_Include_Paths)
+CNL_Lib_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(CNL_Lib_Include_Paths) $(shell pkg-config --cflags libcrypto)
 
 LDUFLAGS:= -pthread $(COMMON_LDFLAGS)
 LDUFLAGS += -Wl,--version-script=sgx_default_qcnl.lds -Wl,--gc-sections
@@ -34,7 +32,7 @@ CNL_Lib_Cpp_Flags+= -DSELF_SIGNED_CERT
 endif
 
 CNL_Lib_Link_Flags := $(SGX_COMMON_FLAGS) -g -L$(TOP_DIR)/build/linux -L$(SGX_SDK)/lib64 \
-		-lpthread -ldl ../../../tools/PCKCertSelection/static_out/libPCKCertSelection.a
+		-lpthread -ldl ../../../tools/PCKCertSelection/static_out/libPCKCertSelection.a $(shell pkg-config --libs libcrypto)
  
 ifndef DEBUG
 CNL_Lib_Cpp_Flags += -DDISABLE_TRACE

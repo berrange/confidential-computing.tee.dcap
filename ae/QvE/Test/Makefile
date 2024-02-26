@@ -20,7 +20,7 @@ SRC_PATH := $(MKFILE_PATH)/../qve
 TEST_PATH := $(MKFILE_PATH)/src
 MOCK_PATH := $(MKFILE_PATH)/src/mock
 
-INCLUDE := -I$(INCLUDE_PATH) -I$(SRC_PATH) -I$(MOCK_PATH) -I$(PREBUILD_OPENSSL_PATH)/inc\
+INCLUDE := -I$(INCLUDE_PATH) -I$(SRC_PATH) -I$(MOCK_PATH) $(shell pkg-config --cflags libcrypto) \
 					-I$(MKFILE_PATH)/../../../QuoteVerification/QVL/Src/AttestationLibrary/src \
                     -I$(MKFILE_PATH)/../../../QuoteVerification/QVL/Src/AttestationLibrary/include \
                     -I$(MKFILE_PATH)/../../../QuoteVerification/QVL/Src/AttestationParsers/include \
@@ -54,7 +54,7 @@ OBJ_SRC_PATH := $(OBJ_PATH)/qve
 OBJS_SRC := $(OBJ_SRC_PATH)/$(notdir $(SRC_QVE_LOGIC:.cpp=.o))
 
 LD_GTEST := -L$(GTEST_PATH)/lib -lgtest -lgmock_main -lgmock
-LDFLAGS := -L$(PREBUILD_OPENSSL_PATH)/lib/linux64 -lcrypto -lpthread -ldl
+LDFLAGS := $(shell pkg-config --libs libcrypto) -lpthread -ldl
 
 CXX_WARNINGS := -Wall -Wextra -Winit-self -Wpointer-arith -Wreturn-type -Waddress -Wsequence-point -Wformat-security -Wmissing-include-dirs -Wfloat-equal -Wundef -Wshadow -Wcast-align -Wconversion -Wredundant-decls
 
