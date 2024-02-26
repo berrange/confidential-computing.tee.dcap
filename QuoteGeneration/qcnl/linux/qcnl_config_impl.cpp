@@ -35,7 +35,7 @@
  *
  */
 
-#include "istreamwrapper.h"
+#include <rapidjson/istreamwrapper.h>
 #include "qcnl_config.h"
 #include <algorithm>
 #include <curl/curl.h>

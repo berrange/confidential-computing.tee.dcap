@@ -36,7 +36,7 @@
  */
 #include "certification_provider.h"
 #include "certification_service.h"
-#include "document.h"
+#include <rapidjson/document.h>
 #include "local_cache.h"
 #include "pck_cert_selection.h"
 #include "qcnl_util.h"

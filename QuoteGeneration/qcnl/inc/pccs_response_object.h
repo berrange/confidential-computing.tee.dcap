@@ -7,7 +7,7 @@
 #define PCCSRESPONSEOBJECT_H_
 #pragma once
 
-#include "document.h"
+#include <rapidjson/document.h>
 #include "qcnl_def.h"
 #include <sstream>
 #include <string>

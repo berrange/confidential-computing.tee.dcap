@@ -36,10 +36,10 @@
  */
 
 #include "qcnl_config.h"
-#include "error/en.h"
-#include "error/error.h"
+#include <rapidjson/error/en.h>
+#include <rapidjson/error/error.h>
 #include <fstream>
-#include <istreamwrapper.h>
+#include <rapidjson/istreamwrapper.h>
 #include <mutex>
 #include <algorithm>
 

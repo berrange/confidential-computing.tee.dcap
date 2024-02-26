@@ -69,7 +69,7 @@ OPENSSL_INC 		:= $(PROJ_ROOT_DIR)/../../prebuilt/openssl/inc
 OPENSSL_LIB 		:= $(PROJ_ROOT_DIR)/../../prebuilt/openssl/lib/linux64
 
 # JSON parser include dir
-JSON_INC		:= $(QVL_DIR)/ThirdParty/rapidjson/include
+JSON_INC		:= $(pkg-config --cflags RapidJSON)
 
 # QVL Attestation Parsers include directory
 PARSERS_INC 		:= $(QVL_DIR)/AttestationParsers/include
@@ -118,7 +118,7 @@ LIB_CPP_OBJECTS 	:= \
 LIB_CPP_OBJECTS := $(addprefix $(BIN_DIR)/, $(LIB_CPP_OBJECTS))
 
 # include paths, local, parser and openssl
-LIB_INCLUDE_PATHS	:= -I. -I$(PROJ_ROOT_DIR)/include $(shell pkg-config --cflags libcrypto) -I$(JSON_INC) -I$(PARSERS_INC) -I$(PARSERS_COMM_INC) -I$(PARSERS_DIR) -I$(VER_DIR) -I$(PARSERS_UTIL_INC)
+LIB_INCLUDE_PATHS	:= -I. -I$(PROJ_ROOT_DIR)/include $(shell pkg-config --cflags libcrypto) $(JSON_INC) -I$(PARSERS_INC) -I$(PARSERS_COMM_INC) -I$(PARSERS_DIR) -I$(VER_DIR) -I$(PARSERS_UTIL_INC)
 
 # the library shared object name
 LIB_NAME		:= libPCKCertSelection.a
