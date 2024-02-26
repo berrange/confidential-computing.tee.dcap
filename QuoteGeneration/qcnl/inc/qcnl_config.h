@@ -38,7 +38,7 @@
 #pragma once
 
 #include "sgx_default_qcnl_wrapper.h"
-#include "document.h"
+#include <rapidjson/document.h>
 #include <memory>
 #include <string>
 
