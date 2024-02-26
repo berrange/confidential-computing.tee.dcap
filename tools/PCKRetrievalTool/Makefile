@@ -74,7 +74,7 @@ App_Include_Paths += -I ../../QuoteGeneration/common/inc/internal
 App_Include_Paths += -I ../../ae/dep/inc/internal -I ../SGXPlatformRegistration/include
 
 App_C_Flags := $(COMMON_FLAGS) $(CFLAGS) $(App_Include_Paths)
-App_Cpp_Flags := $(COMMON_FLAGS) $(CXXFLAGS) $(App_Include_Paths)
+App_Cpp_Flags := $(COMMON_FLAGS) $(CXXFLAGS) $(App_Include_Paths) -DSGX_ENCLAVE_PATH="\"$(SGX_ENCLAVE_PATH)\""
 
 App_Link_Flags := $(SGX_COMMON_CFLAGS) -Wl,-z,relro,-z,now,-z,noexecstack
 App_Link_Flags +=  -lcurl -ldl -lpthread
