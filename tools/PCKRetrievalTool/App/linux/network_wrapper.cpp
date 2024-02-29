@@ -221,7 +221,8 @@ static void network_configuration(string &url, string &proxy_type, string &proxy
 {
     //firstly read local configuration File
     char local_configuration_file_path[MAX_PATH] = "";
-    bool ret = get_program_path(local_configuration_file_path, MAX_PATH -1);
+    bool ret = true;
+    strcpy(local_configuration_file_path, "/etc/PCKIDRetrievalTool/");
     if (ret) {
         if(strnlen(local_configuration_file_path ,MAX_PATH)+strnlen(LOCAL_NETWORK_SETTING,MAX_PATH)+sizeof(char) > MAX_PATH) {
             ret = false;
@@ -378,7 +379,8 @@ network_post_error_t network_https_post(const uint8_t* raw_data, const uint64_t 
 
 bool is_server_url_available() {
     char local_configuration_file_path[MAX_PATH] = "";
-    bool ret = get_program_path(local_configuration_file_path, MAX_PATH -1);
+    bool ret = true;
+    strcpy(local_configuration_file_path, "/etc/PCKIDRetrievalTool/");
     if (ret) {
         if(strnlen(local_configuration_file_path ,MAX_PATH)+strnlen(LOCAL_NETWORK_SETTING,MAX_PATH)+sizeof(char) > MAX_PATH) {
             return false;
