@@ -103,7 +103,7 @@ $(QAL_CXX_Common_Objs): %.o: ../common/%.cpp
 	$(CXX) $(QAL_Cpp_Flags) -c $< -o $@
 
 wasm_lib:
-	test -f $(WARM_Lib_Path)/libiwasm.a || ($(MKDIR) $(WARM_Lib_Path) && cd $(WARM_Lib_Path) && cmake .. $(WASM_CONFIG) && $(MAKE) vmlib)
+	test -f $(WARM_Lib_Path)/libiwasm.a || ($(MKDIR) $(WARM_Lib_Path) && cd $(WARM_Lib_Path) && cmake .. $(WASM_CONFIG) && $(MAKE) vmlib VERBOSE=1)
 
 clean:
 	$(RM) $(QAL_Obj_Files) $(Target_Lib_Name) $(Target_Lib_Name).$(SGX_MAJOR_VER) $(Target_Static_Lib_Name) $(BUILD_DIR)/$(Target_Lib_Name) $(QVL_Cpp_Obj_Files)

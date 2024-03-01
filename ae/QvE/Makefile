@@ -138,37 +138,37 @@ PREPARE_SGXSSL := ../../QuoteVerification/prepare_sgxssl.sh
 SGXSSL_HEADER_CHECK := $(SGXSSL_PACKAGE_PATH)/include/openssl/opensslconf.h
 PREPARE_SGX_SSL:
 ifdef SERVTD_ATTEST
-	@test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TCRYPTO).a && test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TLIB).a && test -f $(SGXSSL_HEADER_CHECK) || export MAKE_PARALLEL_JOBS=$(MAKE_PARALLEL_JOBS); $(PREPARE_SGXSSL) SERVTD_ATTEST
+	test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TCRYPTO).a && test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TLIB).a && test -f $(SGXSSL_HEADER_CHECK) || export MAKE_PARALLEL_JOBS=$(MAKE_PARALLEL_JOBS); $(PREPARE_SGXSSL) SERVTD_ATTEST
 else
-	@test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TCRYPTO).a && test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TLIB).a && test -f $(SGXSSL_HEADER_CHECK) || export MAKE_PARALLEL_JOBS=$(MAKE_PARALLEL_JOBS); $(PREPARE_SGXSSL) $(if $(FIPS),FIPS)
+	test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TCRYPTO).a && test -f $(SGXSSL_PACKAGE_PATH)/lib64/lib$(SGXSSL_TLIB).a && test -f $(SGXSSL_HEADER_CHECK) || export MAKE_PARALLEL_JOBS=$(MAKE_PARALLEL_JOBS); $(PREPARE_SGXSSL) $(if $(FIPS),FIPS)
 endif
 
 $(SGXSSL_HEADER_CHECK): PREPARE_SGX_SSL
 
 install_lib: $(SIGNED_QVE_NAME) | $(BUILD_DIR)
-	 @$(CP) $(SIGNED_QVE_NAME) $(BUILD_DIR)
+	$(CP) $(SIGNED_QVE_NAME) $(BUILD_DIR)
 
 ######## Enclave Objects ########
 
 ifndef SERVTD_ATTEST
 $(QVE_DIR)/sgx_base64.o: $(DCAP_QPL_DIR)/sgx_base64.cpp
-	@$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
+	$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
 	@echo "CXX  <=  $<"
 $(QVE_DIR)/ec_key.o: $(DCAP_QV_DIR)/appraisal/common/ec_key.cpp
-	@$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
+	$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
 	@echo "CXX  <=  $<"
 endif
 
 $(QVL_LIB_OBJS): %.o: %.cpp $(SGXSSL_HEADER_CHECK)
 ifdef SERVTD_ATTEST
-	@$(CXX) -DSERVTD_ATTEST $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
+	$(CXX) -DSERVTD_ATTEST $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
 else
-	@$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
+	$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_LIB_INC) -c $< -o $@
 endif
 	@echo "CXX  <=  $<"
 
 $(QVL_PARSER_OBJS): %.o: %.cpp $(SGXSSL_HEADER_CHECK)
-	@$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_PARSER_INC) -c $< -o $@
+	$(CXX) $(ENCLAVE_CXXFLAGS) $(QVL_PARSER_INC) -c $< -o $@
 	@echo "CXX  <=  $<"
 
 ifndef SERVTD_ATTEST
@@ -179,7 +179,7 @@ $(QVE_DIR)/qve_t.h: $(QVE_DIR)/qve.edl $(SGX_EDGER8R)
 $(QVE_DIR)/qve_t.c: $(QVE_DIR)/qve_t.h
 
 $(QVE_DIR)/qve_t.o: $(QVE_DIR)/qve_t.c
-	@$(CC) $(SGX_COMMON_CFLAGS) $(ENCLAVE_CFLAGS) -c $< -o $@
+	$(CC) $(SGX_COMMON_CFLAGS) $(ENCLAVE_CFLAGS) -c $< -o $@
 	@echo "CC   <=  $<"
 endif
 
@@ -188,7 +188,7 @@ $(QVE_DIR)/%.o: $(QVE_DIR)/%.cpp $(SGXSSL_HEADER_CHECK)
 else
 $(QVE_DIR)/%.o: $(QVE_DIR)/%.cpp $(QVE_DIR)/qve_t.h $(SGXSSL_HEADER_CHECK)
 endif
-	@$(CXX) $(SGX_COMMON_CXXFLAGS) $(ENCLAVE_CXXFLAGS) $(if $(FIPS),-DSGXSSL_FIPS) $(QVL_LIB_INC) -I$(QVL_SRC_PATH) -c $< -o $@
+	$(CXX) $(SGX_COMMON_CXXFLAGS) $(ENCLAVE_CXXFLAGS) $(if $(FIPS),-DSGXSSL_FIPS) $(QVL_LIB_INC) -I$(QVL_SRC_PATH) -c $< -o $@
 	@echo "CXX  <=  $<"
 
 ifdef SERVTD_ATTEST
@@ -209,16 +209,16 @@ endif
 ifdef SERVTD_ATTEST
 $(QVE_NAME): $(QVE_OBJS) $(QVL_PARSER_OBJS) $(QVL_LIB_OBJS)
 	if [ ! -d "$(SERVTD_ATTEST_BUILD_DIR)" ]; then mkdir -p '$(SERVTD_ATTEST_BUILD_DIR)';fi
-	@$(CXX) $^ -shared -o $(SERVTD_ATTEST_BUILD_DIR)/$@ $(ENCLAVE_LDFLAGS) $(ENCLAVE_CXXFLAGS)
+	$(CXX) $^ -shared -o $(SERVTD_ATTEST_BUILD_DIR)/$@ $(ENCLAVE_LDFLAGS) $(ENCLAVE_CXXFLAGS)
 else
 $(QVE_NAME): $(QVE_OBJS) $(QVE_DIR)/qve_t.o $(QVL_PARSER_OBJS) $(QVL_LIB_OBJS) $(QVL_LIB_COMMON_OBJS)
-	@$(CXX) $^ -o $@ $(ENCLAVE_LDFLAGS) $(ENCLAVE_CXXFLAGS) -Wl,-soname=${SIGNED_QVE_NAME}.$(call get_major_version,QVE_VERSION)
+	$(CXX) $^ -o $@ $(ENCLAVE_LDFLAGS) $(ENCLAVE_CXXFLAGS) -Wl,-soname=${SIGNED_QVE_NAME}.$(call get_major_version,QVE_VERSION)
 	$(STRIP) --strip-unneeded --remove-section=.comment --remove-section=.note $@
 endif
 	@echo "LINK =>  $@"
 
 $(SIGNED_QVE_NAME): $(QVE_NAME) $(QVE_CONFIG_FILE)
-	@$(SGX_ENCLAVE_SIGNER) sign -key $(QVE_DIR)/../../dep/dcap_ae_test_key.pem -enclave $< -out $@ -config $(QVE_CONFIG_FILE)
+	$(SGX_ENCLAVE_SIGNER) sign -key $(QVE_DIR)/../../dep/dcap_ae_test_key.pem -enclave $< -out $@ -config $(QVE_CONFIG_FILE)
 	@echo "SIGN =>  $@"
 
 print-% : ; @echo $* = $($*)

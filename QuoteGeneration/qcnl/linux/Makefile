@@ -86,7 +86,7 @@ $(CNL_Lib_Name_Static): $(CNL_Lib_Cpp_Objects) $(CNL_Lib_C_Objects) $(PCK_Select
 	$(AR) rsD $(CNL_Lib_Name_Static) $(CNL_Lib_Cpp_Objects) $(CNL_Lib_C_Objects) $(PCK_Selection_Cpp_Objects)
 
 $(PCK_Selection_Lib_Static):
-	+$(MAKE) -C ../../../tools/PCKCertSelection/PCKCertSelectionLib -f Makefile.static_lib
+	$(MAKE) -C ../../../tools/PCKCertSelection/PCKCertSelectionLib -f Makefile.static_lib VERBOSE=1
 force_look:
 	true
 
