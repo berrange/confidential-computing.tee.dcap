@@ -39,6 +39,8 @@ Quote_C_Objects := $(Quote_C_Files:.c=.o)
 Quote_Cpp_Objects := $(Quote_Cpp_Files:.cpp=.o)
 
 Quote_Name := libsgx_qe3_logic.so
+Quote_Full := $(Quote_Name).$(call get_full_version,QE3_WRAPPER_VERSION)
+Quote_Major := $(Quote_Name).$(call get_major_version,QE3_WRAPPER_VERSION)
 
 .PHONY: all
 all: install_lib
@@ -68,7 +70,7 @@ $(Quote_Cpp_Objects): %.o: %.cpp
 	@echo "CXX  <=  $<"
 
 $(Quote_Name): $(Quote_C_Objects) $(Quote_Cpp_Objects)
-	$(CXX) $(Quote_C_Objects) $(Quote_Cpp_Objects) -shared -Wl,-soname=$@ $(Quote_Link_Flags) -o $@
+	$(CXX) $(Quote_C_Objects) $(Quote_Cpp_Objects) -shared -Wl,-soname=$(Quote_Major) $(Quote_Link_Flags) -o $@
 	@echo "LINK =>  $@"
 
 $(BUILD_DIR):

@@ -16,6 +16,11 @@
 #define QUOTE_LOADER_VERSION         "1.11.110.0"
 #define TDQE_WRAPPER_VERSION         "1.14.110.0"
 #define PCE_WRAPPER_VERSION          "1.14.110.0"
+/*
+ * XXX: downstream hack based on version declared
+ * in linux-sgx.git/linux/installer/common/psw/Makefile
+ */
+#define QE3_WRAPPER_VERSION          "1.0.0"
 
 #define QE3_VERSION                  "1.22.100.1"
 #define QVE_VERSION                  "1.25.100.1"
