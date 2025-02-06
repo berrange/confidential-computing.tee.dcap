@@ -258,7 +258,11 @@ struct alignas(A)randomly_placed_buffer
     }
 
     template <unsigned C = 1>
+#if __GNUC__ == 15 && __GNUC_MINOR__ == 0
+    using storage = char[size(C)];
+#else
     using storage = char[size(C)] alignas(A);
+#endif
 
 private:
     struct alignas(A)_T_instantiator_
