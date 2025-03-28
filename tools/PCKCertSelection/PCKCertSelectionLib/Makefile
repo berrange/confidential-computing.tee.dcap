@@ -126,7 +126,7 @@ CXXFLAGS += -m64 -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -Werror -
 CXXFLAGS += -UPCK_CERT_SELECTION_WITH_COMPONENT
 
 # Link flags
-LINK_FLAGS := -m64 -shared $(COMMON_LDFLAGS) -lcrypto -lpthread -ldl
+LINK_FLAGS := $(LDFLAGS) -m64 -shared $(COMMON_LDFLAGS) -lcrypto -lpthread -ldl
 LINK_FLAGS += -Wl,--version-script=pck_cert_selection.lds -Wl,--gc-sections
 
 # Strip only in RELEASE builds

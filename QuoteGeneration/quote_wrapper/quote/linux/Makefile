@@ -27,7 +27,7 @@ Quote_Include_Paths := -I$(SGX_SDK)/include -I../inc -I../../common/inc -I./ -I$
 Quote_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(Quote_Include_Paths)
 
 Quote_Cpp_Flags := $(Quote_C_Flags) -DSGX_ENCLAVE_PATH="\"$(SGX_ENCLAVE_PATH)\""
-Quote_Link_Flags := $(COMMON_LDFLAGS) -g -pthread -L$(ROOT_DIR)/build/linux -L$(SGX_SDK)/lib64 -lsgx_urts -lpthread -ldl
+Quote_Link_Flags := $(COMMON_LDFLAGS) -g -pthread -L$(ROOT_DIR)/build/linux -L$(SGX_SDK)/lib64 -lsgx_urts -lpthread -ldl $(LDFLAGS)
 
 ifndef DEBUG
 Quote_Cpp_Flags += -DDISABLE_TRACE

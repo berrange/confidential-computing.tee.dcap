@@ -112,12 +112,12 @@ OBJS_MPA_MANAGE_APP := $(patsubst $(MPA_MANAGE_PATH)/src/%.cpp,$(OBJ_MPA_MANAGE_
 OBJ_TEST_PATH := $(OBJ_PATH)/test
 OBJS_TEST := $(patsubst $(TEST_PATH)/%.cpp,$(OBJ_TEST_PATH)/%.o, $(SRC_TEST))
 
-LDFLAGS_SO := -shared -Wl,-z,relro,-z,now,-z,noexecstack
-LDFLAGS_EXE := -pie -Wl,-z,relro,-z,now,-z,noexecstack
-LD_REGI_APP := -L$(LIB_PATH) -Wl,-Bstatic -lmpa_registration -Wl,-Bdynamic -lmpa_network -lmpa_uefi
-LD_MANAGE_APP := -L$(LIB_PATH) -Wl,-Bstatic -lmpa_management -lmpa_registration -Wl,-Bdynamic -lmpa_uefi
+LDFLAGS_SO := $(LDFLAGS) -shared -Wl,-z,relro,-z,now,-z,noexecstack
+LDFLAGS_EXE := $(LDFLAGS) -pie -Wl,-z,relro,-z,now,-z,noexecstack
+LD_REGI_APP := $(LDFLAGS) -L$(LIB_PATH) -Wl,-Bstatic -lmpa_registration -Wl,-Bdynamic -lmpa_network -lmpa_uefi
+LD_MANAGE_APP := $(LDFLAGS) -L$(LIB_PATH) -Wl,-Bstatic -lmpa_management -lmpa_registration -Wl,-Bdynamic -lmpa_uefi
 
-LD_GTEST := -L$(GTEST_PATH)/lib -lgtest -lgmock_main -lgmock -lpthread
+LD_GTEST := $(LDFLAGS) -L$(GTEST_PATH)/lib -lgtest -lgmock_main -lgmock -lpthread
 
 CXX_WARNINGS := -Wall -Wextra -Winit-self -Wpointer-arith -Wreturn-type -Waddress -Wsequence-point -Wformat-security \
 				-Wmissing-include-dirs -Wfloat-equal -Wundef -Wshadow -Wcast-align -Wconversion -Wredundant-decls

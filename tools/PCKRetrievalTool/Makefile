@@ -76,7 +76,7 @@ App_Include_Paths += -I ../../ae/dep/inc/internal -I ../SGXPlatformRegistration/
 App_C_Flags := $(COMMON_FLAGS) $(CFLAGS) $(App_Include_Paths)
 App_Cpp_Flags := $(COMMON_FLAGS) $(CXXFLAGS) $(App_Include_Paths) -DSGX_ENCLAVE_PATH="\"$(SGX_ENCLAVE_PATH)\""
 
-App_Link_Flags := $(SGX_COMMON_CFLAGS) -Wl,-z,relro,-z,now,-z,noexecstack
+App_Link_Flags := $(CXXFLAGS) $(LDFLAGS) $(SGX_COMMON_CFLAGS) -Wl,-z,relro,-z,now,-z,noexecstack
 App_Link_Flags +=  -lcurl -ldl -lpthread
 ifeq ($(STANDALONE), 1)
 	App_Link_Flags += '-Wl,-rpath,$$ORIGIN'
@@ -105,11 +105,11 @@ App/id_enclave_u.c:
 	echo "GEN  =>  $@"
 
 App/id_enclave_u.o: App/id_enclave_u.c
-	@$(CC) $(App_C_Flags) -c $< -o $@
+	$(CC) $(App_C_Flags) -c $< -o $@
 	@echo "CC   <=  $<"
 
 App/pce_u.o: App/pce_u.c
-	@$(CC) $(App_C_Flags) -c $< -o $@
+	$(CC) $(App_C_Flags) -c $< -o $@
 	@echo "CC   <=  $<"
 
 App/%.o: App/%.cpp

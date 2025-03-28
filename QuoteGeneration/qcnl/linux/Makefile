@@ -22,10 +22,11 @@ CNL_Lib_Include_Paths := -I../../quote_wrapper/common/inc       \
 
 CNL_Lib_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(CNL_Lib_Include_Paths) $(shell pkg-config --cflags libcrypto)
 
-LDUFLAGS:= -pthread $(COMMON_LDFLAGS)
+LDUFLAGS:= $(LDFLAGS) -pthread $(COMMON_LDFLAGS)
 LDUFLAGS += -Wl,--version-script=sgx_default_qcnl.lds -Wl,--gc-sections
 
-CNL_Lib_Cpp_Flags := $(CNL_Lib_C_Flags)
+CNL_Lib_Cpp_Flags := $(CXXFLAGS) $(CNL_Lib_C_Flags)
+CNL_Lib_C_Flags += $(CFLAGS)
 
 ifdef SELF_SIGNED_CERT
 CNL_Lib_Cpp_Flags+= -DSELF_SIGNED_CERT

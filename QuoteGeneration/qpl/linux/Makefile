@@ -23,9 +23,9 @@ QPL_Lib_C_Flags := $(COMMON_FLAGS) -g -fPIC -Werror -Wno-attributes $(QPL_Lib_In
 LDUFLAGS:= -pthread $(COMMON_LDFLAGS)
 LDUFLAGS += -Wl,--version-script=sgx_default_quote_provider.lds -Wl,--gc-sections
 
-QPL_Lib_Cpp_Flags := $(QPL_Lib_C_Flags)
+QPL_Lib_Cpp_Flags := $(CXXFLAGS) $(QPL_Lib_C_Flags)
 
-QPL_Lib_Link_Flags := $(SGX_COMMON_FLAGS) -g -L$(TOP_DIR)/build/linux -L$(SGX_SDK)/lib64 \
+QPL_Lib_Link_Flags := $(LDFLAGS) $(SGX_COMMON_FLAGS) -g -L$(TOP_DIR)/build/linux -L$(SGX_SDK)/lib64 \
         -lcrypto -lsgx_default_qcnl_wrapper -lpthread -ldl
  
 ifndef DEBUG

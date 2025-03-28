@@ -26,7 +26,7 @@ endif
 DEPENDS = ${QGS_OBJS test_client.o:.o=.d}
 
 # SGX related libraries
-QGS_LFLAGS = -L$(TOP_DIR)/build/linux -lsgx_tdx_logic -lsgx_pce_logic -ldl \
+QGS_LFLAGS = $(LDFLAGS) -L$(TOP_DIR)/build/linux -lsgx_tdx_logic -lsgx_pce_logic -ldl \
              -L$(SGX_SDK)/lib64 -lsgx_urts -g
 # add boost_system for link
 ifeq ($(CC_LESS_THAN_15), 1)
