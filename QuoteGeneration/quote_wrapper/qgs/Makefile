@@ -18,10 +18,6 @@ QGS_INC = -I$(SGX_SDK)/include \
 		  -I$(TOP_DIR)/quote_wrapper/qgs_msg_lib/inc
 QGS_CFLAGS = -g -MMD -Werror $(CFLAGS) $(QGS_INC)
 QGS_CXXFLAGS = -g -MMD -Werror $(CXXFLAGS) $(QGS_INC)
-ifeq ($(CC_NO_LESS_THAN_8), 1)
-    QGS_CFLAGS += -fcf-protection=none
-    QGS_CXXFLAGS += -fcf-protection=none
-endif
 
 DEPENDS = ${QGS_OBJS test_client.o:.o=.d}
 
