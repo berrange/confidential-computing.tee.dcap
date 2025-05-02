@@ -258,7 +258,7 @@ int main(int argc, const char* argv[])
     unsigned long int port = MAX_PORT_NUMBER + 1;
     unsigned long int num_threads = 0;
     string socket_file = QGS_UNIX_SOCKET_FILE;
-    const mode_t socket_mode = 0660;
+    mode_t socket_mode = 0660;
     char *endptr = NULL;
     // Initialise logging to stdout before argument and config-file parsing
     // so that early diagnostic messages are visible in the terminal.
@@ -321,6 +321,17 @@ int main(int argc, const char* argv[])
                          << QGS_CONFIG_FILE << endl;
                     exit(1);
                 }
+            } else if (name.compare("socket_mode") == 0) {
+                unsigned long mode;
+                errno = 0;
+                endptr = NULL;
+                mode = (mode_t)strtoul(value, &endptr, 8);
+                if (errno || strlen(endptr) || (mode > UINT_MAX)) {
+                    cout << "Please input valid socket mode in "
+                         << QGS_CONFIG_FILE << endl;
+                    exit(1);
+                }
+                socket_mode = (mode_t)mode;
             }
             // ignore unrecognized parameters
         }
@@ -353,6 +364,21 @@ int main(int argc, const char* argv[])
             cout << "port number [" << port << "] found in cmdline" << endl;
             socket_based_communication = false;
             continue;
+        } else if (strncmp(argv[i], "-m=", 3 ) == 0) {
+            unsigned long mode;
+            if (strspn(argv[i] + 3, "0123456789") != strlen(argv[i] + 3)) {
+                cout << "Please input valid socket mode" << endl;
+                exit(1);
+            }
+            errno = 0;
+            mode = strtoul(argv[i] + 3, &endptr, 8);
+            if (errno || strlen(endptr) || (mode > UINT_MAX) ) {
+                cout << "Please input valid socket mode" << endl;
+                exit(1);
+            }
+            cout << "socket mode [" << oct << mode << dec << "] found in cmdline" << endl;
+            socket_mode = (mode_t)mode;
+            continue;
         } else if (strncmp(argv[i], "-n=", 3) == 0) {
             if (strspn(argv[i] + 3, "0123456789") != strlen(argv[i] + 3)) {
                 cout << "Please input valid thread number" << endl;
@@ -371,7 +397,7 @@ int main(int argc, const char* argv[])
             cout << "log level [" << argv[i] + 3 << "] found in cmdline" << endl;
             continue;
         } else {
-            cout << "Usage: " << argv[0] << " [--no-daemon] [-p=port_number] [-n=number_threads] [-l=log_level]"
+            cout << "Usage: " << argv[0] << " [--no-daemon] [-p=port_number] [-m=unix_socket_mode] [-n=number_threads] [-l=log_level]"
                 << endl;
             exit(1);
         }
