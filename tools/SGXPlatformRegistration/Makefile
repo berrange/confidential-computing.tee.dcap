@@ -36,7 +36,8 @@ EXTERNAL_PATH := $(MKFILE_PATH)/../../external
 DEST_PATH := $(BUILD_PATH)/release
 INSTALL_PATH := $(DEST_PATH)/installer
 
-GTEST_PATH := $(EXTERNAL_PATH)/gtest/build
+GTEST_CFLAGS := $(shell pkg-config --cflags gtest gmock gmock_main)
+GTEST_LDFLAGS := $(shell pkg-config --libs gtest gmock gmock_main)
 TEST_PATH := $(MKFILE_PATH)/test
 
 ifdef DEBUG
@@ -67,8 +68,7 @@ INCLUDE += -I$(MANAGEMENT_PATH)/inc
 INCLUDE += -I$(NETWORK_PATH)/inc
 INCLUDE += -I$(UEFI_PATH)/inc
 
-GTEST_INCLUDE := -isystem$(GTEST_PATH)/include
-TESTS_INCLUDE := -I$(TEST_PATH) -I$(TEST_PATH)/mocks $(GTEST_INCLUDE)
+TESTS_INCLUDE := -I$(TEST_PATH) -I$(TEST_PATH)/mocks $(GTEST_CFLAGS)
 
 SRC_AGENT := $(wildcard $(AGENT_PATH)/src/*cpp)
 SRC_COMMON := $(wildcard $(COMMON_PATH)/src/*cpp)
@@ -116,7 +116,7 @@ LDFLAGS_SO := $(LDFLAGS) -shared -Wl,-z,relro,-z,now,-z,noexecstack
 LD_REGI_APP := $(LDFLAGS) -L$(LIB_PATH) -Wl,-Bstatic -lmpa_registration -Wl,-Bdynamic -lmpa_network -lmpa_uefi
 LD_MANAGE_APP := $(LDFLAGS) -L$(LIB_PATH) -Wl,-Bstatic -lmpa_management -lmpa_registration -Wl,-Bdynamic -lmpa_uefi
 
-LD_GTEST := $(LDFLAGS) -L$(GTEST_PATH)/lib -lgtest -lgmock_main -lgmock -lpthread
+LD_GTEST := $(LDFLAGS) $(GTEST_LDFLAGS) -lpthread
 
 CXX_WARNINGS := -Wall -Wextra -Winit-self -Wpointer-arith -Wreturn-type -Waddress -Wsequence-point -Wformat-security \
 				-Wmissing-include-dirs -Wfloat-equal -Wundef -Wshadow -Wcast-align -Wconversion -Wredundant-decls
@@ -267,5 +267,5 @@ $(OBJ_MPA_MANAGE_APP_PATH)/%.o: $(MPA_MANAGE_PATH)/src/%.cpp
 	@echo "$<"
 
 $(OBJ_TEST_PATH)/%.o: $(TEST_PATH)/%.cpp
-	@$(CXX) -c $(CXXFLAGS) $(INCLUDE) $(GTEST_INCLUDE)  $< -o $@
+	@$(CXX) -c $(CXXFLAGS) $(INCLUDE) $(GTEST_CFLAGS)  $< -o $@
 	@echo "$<"

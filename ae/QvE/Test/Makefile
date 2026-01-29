@@ -14,7 +14,8 @@ EXTERNAL_PATH := $(MKFILE_PATH)/../../../external
 BUILD_PATH := $(MKFILE_PATH)/build
 DEST_PATH := $(BUILD_PATH)/release
 APPRAISAL_COMMON_PATH := $(MKFILE_PATH)/../../appraisal/common
-GTEST_PATH := $(EXTERNAL_PATH)/gtest/build
+GTEST_CFLAGS := $(shell pkg-config --cflags gtest gmock gmock_main)
+GTEST_LDFLAGS := $(shell pkg-config --libs gtest gmock gmock_main)
 
 SRC_PATH := $(MKFILE_PATH)/../qve
 TEST_PATH := $(MKFILE_PATH)/src
@@ -29,7 +30,7 @@ INCLUDE := -I$(INCLUDE_PATH) -I$(SRC_PATH) -I$(MOCK_PATH) $(shell pkg-config --c
 					-isystem$(EXTERNAL_PATH)/jwt-cpp/include
 
 TESTS_INCLUDE := -I$(TEST_PATH) -I$(SRC_PATH) -I$(MOCK_PATH)\
-					-isystem$(GTEST_PATH)/include
+					$(GTEST_CFLAGS)
 
 QVE_BUILD_TYPE :=
 ifeq ($(DEBUG), 1)
@@ -53,7 +54,7 @@ OBJS_MOCK := $(patsubst $(MOCK_PATH)/%.cpp,$(OBJ_MOCK_PATH)/%.o, $(SRC_MOCK))
 OBJ_SRC_PATH := $(OBJ_PATH)/qve
 OBJS_SRC := $(OBJ_SRC_PATH)/$(notdir $(SRC_QVE_LOGIC:.cpp=.o))
 
-LD_GTEST := -L$(GTEST_PATH)/lib -lgtest -lgmock_main -lgmock
+LD_GTEST := $(GTEST_LDFLAGS)
 LDFLAGS := $(shell pkg-config --libs libcrypto) -lpthread -ldl
 
 CXX_WARNINGS := -Wall -Wextra -Winit-self -Wpointer-arith -Wreturn-type -Waddress -Wsequence-point -Wformat-security -Wmissing-include-dirs -Wfloat-equal -Wundef -Wshadow -Wcast-align -Wconversion -Wredundant-decls
