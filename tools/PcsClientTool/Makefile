@@ -7,7 +7,8 @@
 .NOTPARALLEL:
 default: all
 
-all: deb_sgx_pcs_client_pkg rpm_sgx_pcs_client_pkg
+#all: deb_sgx_pcs_client_pkg rpm_sgx_pcs_client_pkg
+all:
 
 .PHONY: deb_sgx_pcs_client_pkg
 deb_sgx_pcs_client_pkg:
