@@ -29,7 +29,7 @@ QAL_Link_Flags := $(COMMON_LDFLAGS) -L$(WARM_Lib_Path) -lvmlib  -ldl -lm -lpthre
                 $(shell pkg-config --libs libcrypto) \
                 -Wl,--gc-sections -Wl,--version-script=sgx_dcap_qal.lds
 
-WASM_CONFIG ?= -DCMAKE_BUILD_TYPE=Release
+WASM_CONFIG ?= -DCMAKE_BUILD_TYPE=Release -DWAMR_BUILD_SIMD=0 -DWAMR_BUILD_LIB_SIMDE=0
 ifeq ($(DEBUG), 1)
     WASM_CONFIG := -DCMAKE_BUILD_TYPE=Debug
 	QAL_Cpp_Flags += -fsanitize=undefined
