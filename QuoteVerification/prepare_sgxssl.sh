@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
+set -e
+
 top_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 sgxssl_dir=$top_dir/sgxssl
 openssl_out_dir=$sgxssl_dir/openssl_source
