@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
+set -e
+
 ARG1=${1:-build}
 top_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 sgxssl_dir=$top_dir/sgxssl
