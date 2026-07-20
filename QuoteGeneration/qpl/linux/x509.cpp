@@ -69,8 +69,8 @@ static vector<string> crl_urls(X509 *x509) {
         } else if (distpoint->type == 1) {
             STACK_OF(X509_NAME_ENTRY) *sk_relname = distpoint->name.relativename;
             for (int k = 0; k < sk_X509_NAME_ENTRY_num(sk_relname); k++) {
-                X509_NAME_ENTRY *e = sk_X509_NAME_ENTRY_value(sk_relname, k);
-                ASN1_STRING *d = X509_NAME_ENTRY_get_data(e);
+                const X509_NAME_ENTRY *e = sk_X509_NAME_ENTRY_value(sk_relname, k);
+                const ASN1_STRING *d = X509_NAME_ENTRY_get_data(e);
                 list.push_back(string((char *)ASN1_STRING_get0_data(d), ASN1_STRING_length(d)));
             }
         }
