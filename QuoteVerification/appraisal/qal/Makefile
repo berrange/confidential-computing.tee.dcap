@@ -38,6 +38,7 @@ ifeq ($(DEBUG), 1)
 endif
 # Disable HW bound check to allow potential usage with other languages, such as Golang, Java
 WASM_CONFIG += -DWAMR_DISABLE_HW_BOUND_CHECK=1
+WASM_CONFIG += -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ifeq ($(USE_LOCAL_WASM), 1)
     QAL_Cpp_Flags += -DUSE_LOCAL_WASM
